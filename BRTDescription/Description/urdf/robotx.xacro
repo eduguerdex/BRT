@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<robot name="robotconxacro" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Color of materials -->
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <xacro:property name="base_radius" value="0.2" />
+  <xacro:property name="base_length" value="0.01" />
+
+  <xacro:property name="link_radius" value="0.04" />
+  <xacro:property name="pan_link_length" value="0.4" />
+  <xacro:property name="tilt_link_length" value="0.4" />
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="${base_length}" radius="${base_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="yellow" />
+    </visual>
+  </link>
+
+  <joint name="pan_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="pan_link"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.1" upper="3.1"/>
+  </joint>
+
+  <link name="pan_link">
+    <visual>
+      <geometry>
+        <cylinder length="${pan_link_length}" radius="${link_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${pan_link_length/2}"/>
+      <material name="blue" />
+    </visual>
+  </link>
+
+  <joint name="tilt_joint" type="revolute">
+    <parent link="pan_link"/>
+    <child link="tilt_link"/>
+    <origin xyz="0 0 ${pan_link_length}"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+  </joint>
+
+  <link name="tilt_link">
+    <visual>
+      <geometry>
+        <cylinder length="${tilt_link_length}" radius="${link_radius}"/>
+      </geometry>
+      <origin rpy="0 1.57 0" xyz="0 0 0"/>
+      <material name="red" />
+    </visual>
+  </link>
+
+</robot>
