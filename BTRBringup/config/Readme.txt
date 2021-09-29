@@ -1,1 +1,0 @@
-Configuraciòn para verificar simulaciòn 
