@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+
+import rospy
+from std_msgs.msg import Float64
+
+if __name__ == "__main__":
+
+    rospy.init_node("sendJointsGzNode")
+    topic1 = '/robot/joint1_position_controller/command'
+    topic2 = '/robot/joint2_position_controller/command'
+    pub1 = rospy.Publisher(topic1, Float64, queue_size=10, latch=True)
+    pub2 = rospy.Publisher(topic2, Float64, queue_size=10, latch=True)
+    
+    j1 = Float64()
+    j2 = Float64()
+    j1.data = 0.5
+    j2.data = 0.5
+
+    pub1.publish(j1)
+    pub2.publish(j2)
+
+    rate = rospy.Rate(10)
+    while not rospy.is_shutdown():
+        rate.sleep()

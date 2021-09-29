@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+
+<robot name="robot_brazo">
+
+  <!-- Color of materials -->
+  <material name="Blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="Red">
+    <color rgba="1 0 0 1"/>
+  </material>
+  <material name="Green">
+    <color rgba="0 1 0 1"/>
+  </material>
+  <material name="Yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+  <material name="White">
+    <color rgba="1.1 1.1 1.1 1"/>
+  </material>
+  <material name="Black">
+    <color rgba="0.1 0.1 0.1 1"/>
+  </material>>
+
+
+  <link name="base">
+    <visual>
+      <geometry>
+        <box size="0.4 0.4 0.4"/>
+     </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="Blue" />
+    </visual>
+  </link> 
+  <gazebo reference="base">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="base-0_joint" type="revolute">
+    <parent link="base"/>
+    <child link="0_link"/>
+    <origin rpy="0 0 0" xyz="0 0.2 0"/>
+    <axis xyz="1 0 0" />
+    <limit effort="300" velocity="0.1" lower="-1.4" upper="1.4"/>
+  </joint>
+
+  <link name="0_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.55" radius="0.2"/>
+     </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.275 0"/>
+      <material name="Black" />
+    </visual>
+  </link> 
+  <gazebo reference="0_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="0-1_joint" type="revolute">
+    <parent link="0_link"/>
+    <child link="1_link"/>
+    <origin rpy="0 0 0" xyz="0 0.55 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="300" velocity="0.1" lower="-1" upper="1"/>
+  </joint>
+
+  <link name="1_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.3 0"/>
+      <material name="White"/>
+    </visual>
+  </link>
+  <gazebo reference="1_link">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <joint name="2_joint" type="revolute">
+    <parent link="1_link"/>
+    <child link="2_link"/>
+    <origin rpy="0 0 0" xyz="0 0.6 0"/>
+    <axis xyz="1 0 0" />
+    <limit effort="300" velocity="0.1" lower="-1.15" upper="1.15"/>
+  </joint>
+
+  <link name="2_link">
+    <visual>
+      <geometry>
+        <cylinder length="1.9" radius="0.2"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.95 0"/>
+      <material name="LightGrey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <gazebo reference="2_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="4_joint" type="revolute">
+    <parent link="2_link"/>
+    <child link="4_link"/>
+    <origin rpy="0 0 0" xyz="0 1.9 0"/>
+    <axis xyz="1 0 0" />
+    <limit effort="300" velocity="0.1" lower="-1.1" upper="1.85"/>
+  </joint>
+
+  <link name="4_link">
+    <visual>
+      <geometry>
+        <cylinder length="2.2" radius="0.2"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 1.1 0"/>
+      <material name="White"/>
+    </visual>
+  </link>
+  <gazebo reference="4_link">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <joint name="5_joint" type="revolute">
+    <parent link="4_link"/>
+    <child link="5_link"/>
+    <origin rpy="0 0 0" xyz="0 2.2 0"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-0.95" upper="1.05"/>
+  </joint>
+
+  <link name="5_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.4" radius="0.2"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.2 0"/>
+      <material name="Black" />
+    </visual>
+  </link>
+  <gazebo reference="5_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="6_joint" type="revolute">
+    <parent link="5_link"/>
+    <child link="mesh_6_link"/>
+    <origin rpy="0 0 0" xyz="0 0.4 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-0.95" upper="1.05"/>
+  </joint>
+
+   <link name="mesh_6_link">
+        <visual>
+            <origin rpy="3.1416 1.5708 0" xyz="0 0.275 0"/>
+            <geometry>
+                <mesh filename="package://lab2/manorobot/mano.dae"
+                 scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link> 
+
+</robot>
