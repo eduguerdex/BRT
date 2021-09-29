@@ -1,0 +1,8 @@
+prefix=/home/user/lab_ws/devel
+
+Name: lab7
+Description: Description of lab7
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
