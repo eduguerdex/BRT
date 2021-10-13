@@ -12,7 +12,7 @@ class Robot(object):
         self.M = np.zeros([ndof, ndof])
         self.b = np.zeros(ndof)
         self.dt = dt
-        self.robot = rbdl.loadModel('../urdf/robot.urdf')
+        self.robot = rbdl.loadModel('../urdf/BRT.urdf')
 
     def send_command(self, tau):
         rbdl.CompositeRigidBodyAlgorithm(self.robot, self.q, self.M)
@@ -49,13 +49,17 @@ def br_fkine(q):
     Calcular la cinematica directa del robot UR5 dados sus valores articulares. 
     q es un vector numpy de la forma [q1, q2, q3, q4, q5, q6]
     """
+    l1=7.5
+    l2=12.5
+    l3=12.5
+    l4=6.5
+    l5=13
     # Matrices DH
-    T1 = dh(0,q[0],0.6,pi/2)
-    T2 = dh(0,q[1],1.9,0)
-    T3 = dh(0,q[2]+pi/2,0,pi/2)
-    T4 = dh(0,q[3]+pi,2.2,-pi/2)
-    T5 = dh(0,pi,0.5,pi/2)
-    T6 = dh(0,q[5],0,0)
+    T1=dh(l1   ,q[0]     ,0 ,-pi/2)
+    T2=dh(0    ,q[1]+pi/2,-l2 ,0    )
+    T3=dh(0    ,q[2]     ,-l3,0 )
+    T4=dh(0    ,q[3]-pi/2,0,pi/2    )
+    T5=dh(l4+l5,q[4]     ,0 ,0    )
     # Efector final con respecto a la base
-    T = T1.dot(T2).dot(T3).dot(T4).dot(T5).dot(T6)
+    T = T1.dot(T2).dot(T3).dot(T4).dot(T5)
     return T

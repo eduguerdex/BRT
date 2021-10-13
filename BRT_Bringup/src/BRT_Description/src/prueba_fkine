@@ -10,12 +10,14 @@ pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
 bmarker = BallMarker(color['GREEN'])
 
 # Joint names
-jnames = ['base_joint','shoulder_joint', 'elbow_joint', 'wrist_pitch_joint','wrist_roll_joint', 'gripper_joint']#
+jnames = ['base_joint','shoulder_joint', 'elbow_joint', 'wrist_pitch_joint','wrist_roll_joint', 'gripper_joint']
+
+
 # Joint Configuration
-q = [2,0,0,1.578,0.4,1]
+q = [0, 0,0,0,0,0]
 
 # End effector with respect to the base
-T = fkine_BRT(q)
+T = fkine_ur5(q)
 print("Posicion y orientacion del efector final")
 print( np.round(T, 3) )
 bmarker.position(T)

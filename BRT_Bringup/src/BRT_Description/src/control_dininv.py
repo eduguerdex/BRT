@@ -3,13 +3,12 @@
 import rospy
 from sensor_msgs.msg import JointState
 from markers import *
-from functions import *
+from ManoDEV import *
 from roslib import packages
-
 import rbdl
 
 
-rospy.init_node("control_pdg")
+rospy.init_node("control_inv")
 pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
 bmarker_actual  = BallMarker(color['RED'])
 bmarker_deseado = BallMarker(color['GREEN'])
@@ -20,14 +19,12 @@ fxact = open("/tmp/xactual.txt", "w")
 fxdes = open("/tmp/xdeseado.txt", "w")
 
 # Nombres de las articulaciones
-jnames = ['base_0_joint', '0-1_joint', '2_joint',
-          '4_joint', '5_joint', '6_joint']
+jnames = ['base-0_joint', '0-1_joint', '1-2_joint','2-4_joint', '4-5_joint', '5-6_joint']
 # Objeto (mensaje) de tipo JointState
 jstate = JointState()
 # Valores del mensaje
 jstate.header.stamp = rospy.Time.now()
 jstate.name = jnames
-
 # =============================================================
 # Configuracion articular inicial (en radianes)
 q = np.array([0, 0.0, -0.0, 0.0, 0.0, 0.15])
@@ -36,7 +33,7 @@ dq = np.array([0., 0., 0., 0., 0., 0.])
 # Aceleracion inicial
 ddq = np.array([0., 0., 0., 0., 0., 0.])
 # Configuracion articular deseada
-qdes = np.array([0.2, -0.03, -0.3, 0.92, 1.06, -0.95])
+qdes = np.array([-0.12, -0.16, -0.31, 1.04, 1.02, -0.59])
 # Velocidad articular deseada
 dqdes = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 # Aceleracion articular deseada
@@ -44,13 +41,15 @@ ddqdes = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 # =============================================================
 
 # Posicion resultante de la configuracion articular deseada
-xdes = br_fkine(qdes)[0:3,3]
+xdes = fkine_ur5(qdes)[0:3,3]
+
 # Copiar la configuracion articular en el mensaje a ser publicado
+
 jstate.position = q
 pub.publish(jstate)
 
 # Modelo RBDL
-modelo = rbdl.loadModel('../urdf/robot.urdf')
+modelo = rbdl.loadModel('../urdf/robot_c.urdf')
 ndof   = modelo.q_size     # Grados de libertad
 zeros = np.zeros(ndof)     # Vector de ceros
 
@@ -61,7 +60,6 @@ rate = rospy.Rate(freq)
 
 # Simulador dinamico del robot
 robot = Robot(q, dq, ndof, dt)
-
 # Bucle de ejecucion continua
 t = 0.0
 
@@ -76,7 +74,7 @@ while not rospy.is_shutdown():
     q  = robot.read_joint_positions()
     dq = robot.read_joint_velocities()
     # Posicion actual del efector final
-    x = br_fkine(q)[0:3,3]
+    x = fkine_ur5(q)[0:3,3]
     # Tiempo actual (necesario como indicador para ROS)
     jstate.header.stamp = rospy.Time.now()
 
@@ -90,7 +88,7 @@ while not rospy.is_shutdown():
                 ' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+'\n ')
 
     # ----------------------------
-      # Control dinamico (COMPLETAR)
+ # Control dinamico (COMPLETAR)
     # ----------------------------
     # Arrays numpy
     zeros = np.zeros(ndof)          # Vecto
@@ -106,24 +104,20 @@ while not rospy.is_shutdown():
     # Parte 1: Calcular vector de gravedad, vector de Coriolis/centrifuga,
     # Gravedad
     rbdl.InverseDynamics(modelo, q, zeros, zeros, g)
-    print("Gravedad:")
-    print(np.round(g,2))
+
     # coriolis
     rbdl.InverseDynamics(modelo, q, dq, zeros, c)
     Co=c-g
-    print("Coriolis:")
-    print(np.round(Co,2))
- 
-        # y matriz M usando solamente InverseDynamics
+
+    # y matriz M usando solamente InverseDynamics
  
     for i in range(6): 
         mi = np.zeros(ndof)
         rbdl.InverseDynamics(modelo, q, zeros, e[i,:], mi)
         M[i,:]=mi-g
- 
-    print("Matriz de inercia:")
+    
+    print("Matriz:")
     print(np.round(M,2))
- 
    
     e=qdes-q
     de=dqdes-dq
@@ -131,7 +125,11 @@ while not rospy.is_shutdown():
     Kde=Kd.dot(de)
     u=M.dot(ddqdes+Kde+Kp.dot(e))+Co.dot(ddq)+g
     
+    if np.linalg.norm(e)<0.01:
+        break
+    
     # Simulacion del robot
+
     robot.send_command(u)
 
     # Publicacion del mensaje

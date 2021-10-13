@@ -3,7 +3,7 @@ import numpy as np
 
 
 # Lectura del modelo del robot a partir de URDF (parsing)
-modelo = rbdl.loadModel('../urdf/robot.urdf')
+modelo = rbdl.loadModel('../urdf/robot_c.urdf')
 # Grados de libertad
 ndof = modelo.q_size
 

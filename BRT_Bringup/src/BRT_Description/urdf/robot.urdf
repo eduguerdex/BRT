@@ -32,6 +32,7 @@
       <material name="Blue" />
     </visual>
   </link> 
+  
   <gazebo reference="base">
     <material>Gazebo/Blue</material>
   </gazebo>

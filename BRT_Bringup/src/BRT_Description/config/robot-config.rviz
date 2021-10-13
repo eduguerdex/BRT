@@ -1,13 +1,13 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 78
+    Help Height: 90
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
       Splitter Ratio: 0.5
-    Tree Height: 370
+    Tree Height: 358
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -59,42 +59,47 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        0_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        1_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        2_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        4_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        5_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base:
+        base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        mesh_6_link:
+        braccio_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_gripper_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_gripper_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_pitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_roll_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -105,11 +110,19 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: visualization_marker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -133,25 +146,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 17.135963439941406
+      Distance: 1.2478221654891968
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.029572367668151855
+        Y: 0.006323754787445068
+        Z: 0.18479692935943604
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5303982496261597
+      Pitch: 0.5072555541992188
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.9953968524932861
+      Yaw: 1.01541006565094
     Saved: ~
 Window Geometry:
   Displays:
@@ -171,5 +184,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 57
-  Y: 0
+  X: 300
+  Y: 2
