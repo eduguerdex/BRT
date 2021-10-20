@@ -57,11 +57,11 @@ def fkine_BRT(q):
     l4=(6.5/m)
     l5=(13/m)
     # Matrices DH
-    T1=dh(l1   ,q[0] ,0  ,-pi/2 )
-    T2=dh(0    ,q[1]+pi/2,-l2, 0 )
-    T3=dh(0    ,-q[2]     ,-l3,0    )
-    T4=dh(0    ,-q[3]-pi/2,0 ,pi/2  )
-    T5=dh(l4+l5,-q[4]     ,0 ,0     )
+    T1=dh(l1 ,-q[0] , 0 ,-pi/2 )#listo
+    T2=dh(l2 ,0,0,q[1]+pi/2)
+    T3=dh(-l3,0,0,q[2]-pi/2  )
+    T4=dh(0,q[3]+pi/2,0 ,0) #listo
+    T5=dh(-l4-l5,-q[4]     ,0 ,0     )#listo
     
     # Efector final con respecto a la base
     T = T1.dot(T2).dot(T3).dot(T4).dot(T5)
