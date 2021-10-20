@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+import rospy
+from sensor_msgs.msg import JointState
+from markers import *
+from BraccioDEV import *
+import numpy
+import sys
+import serial
+from std_msgs.msg import Float32MultiArray
+from rospy.numpy_msg import numpy_msg
+from rospy_tutorials.msg import Floats
+from std_msgs.msg import Int32
+
+rospy.init_node("testForwardKinematics")
+pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
+bmarker = BallMarker(color['GREEN'])
+
+# Joint names
+jnames = ['base_joint','shoulder_joint', 'elbow_joint', 'wrist_pitch_joint','wrist_roll_joint', 'gripper_joint']#
+# Joint Configuration
+q = [1.57,0,0,1.57,1.57,1]
+
+# End effector with respect to the base
+T = fkine_BRT(q)
+print("Posicion y orientacion del efector final")
+print( np.round(T, 3) )
+bmarker.position(T)
+
+# Object (message) whose type is JointState
+jstate = JointState()
+# Set values to the message
+jstate.header.stamp = rospy.Time.now()
+jstate.name = jnames
+# Add the head joint value (with value 0) to the joints
+jstate.position = q
+
+print("Configuracion articular")
+print(np.round(q,2))
+# Loop rate (in Hz)
+rate = rospy.Rate(100)
+# Continuous execution loop
+while not rospy.is_shutdown():
+    # Current time (needed for ROS)
+    jstate.header.stamp = rospy.Time.now()
+    # Publish the message
+    pub.publish(jstate)
+    bmarker.publish()
+    # Wait for the next iteration
+    rate.sleep()
